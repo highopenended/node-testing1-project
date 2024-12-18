@@ -8,8 +8,13 @@
  */
 function trimProperties(obj) {
   // ✨ implement
+  const newObj = {};
+  for (let key in obj) {
+      newObj[key] = typeof obj[key] === "string" ? obj[key].trim() : obj[key];
+  }
+  return newObj;
 }
-
+trimProperties()
 /**
  * [Exercise 2] trimPropertiesMutation trims in place the properties of an object
  * @param {object} obj - an object with properties that are strings
@@ -20,7 +25,14 @@ function trimProperties(obj) {
  */
 function trimPropertiesMutation(obj) {
   // ✨ implement
+  for (let key in obj) {
+    if(typeof obj[key] === 'string'){
+      obj[key]=obj[key].trim()
+    }
+  }
+  return obj;
 }
+trimPropertiesMutation()
 
 /**
  * [Exercise 3] findLargestInteger finds the largest integer in an array of objects { integer: 1 }
@@ -31,7 +43,9 @@ function trimPropertiesMutation(obj) {
  * findLargestInteger([{ integer: 1 }, { integer: 3 }, { integer: 2 }]) // returns 3
  */
 function findLargestInteger(integers) {
-  // ✨ implement
+  return integers.reduce((max, obj) => {
+    return obj.integer > max ? obj.integer : max;
+  }, -Infinity);
 }
 
 class Counter {
@@ -40,7 +54,7 @@ class Counter {
    * @param {number} initialNumber - the initial state of the count
    */
   constructor(initialNumber) {
-    // ✨ initialize whatever properties are needed
+    this.count = initialNumber;
   }
 
   /**
@@ -56,7 +70,10 @@ class Counter {
    * counter.countDown() // returns 0
    */
   countDown() {
-    // ✨ implement
+    if (this.count > 0) {
+      return this.count--;
+    }
+    return this.count;
   }
 }
 
@@ -65,7 +82,8 @@ class Seasons {
    * [Exercise 5A] Seasons creates a seasons object
    */
   constructor() {
-    // ✨ initialize whatever properties are needed
+    this.seasons = ['summer', 'fall', 'winter', 'spring'];
+    this.currentIndex = 0;
   }
 
   /**
@@ -81,7 +99,9 @@ class Seasons {
    * seasons.next() // returns "summer"
    */
   next() {
-    // ✨ implement
+    const currentSeason = this.seasons[this.currentIndex];
+    this.currentIndex = (this.currentIndex + 1) % this.seasons.length;
+    return currentSeason;
   }
 }
 
@@ -96,6 +116,11 @@ class Car {
     this.odometer = 0 // car initilizes with zero miles
     this.tank = tankSize // car initiazes full of gas
     // ✨ initialize whatever other properties are needed
+    this.name = name;
+    this.odometer = 0;
+    this.tankSize = tankSize;
+    this.mpg = mpg;
+    this.fuel = tankSize; // Start with a full tank
   }
 
   /**
@@ -112,7 +137,11 @@ class Car {
    * focus.drive(200) // returns 600 (ran out of gas after 100 miles)
    */
   drive(distance) {
-    // ✨ implement
+    const drivableMiles = this.fuel * this.mpg;
+    const milesDriven = distance <= drivableMiles ? distance : drivableMiles;
+    this.odometer += milesDriven;
+    this.fuel -= milesDriven / this.mpg;
+    return this.odometer;
   }
 
   /**
@@ -127,7 +156,7 @@ class Car {
    * focus.refuel(99) // returns 600 (tank only holds 20)
    */
   refuel(gallons) {
-    // ✨ implement
+    this.fuel = Math.min(this.tankSize, this.fuel + gallons);
   }
 }
 
